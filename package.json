@@ -7,9 +7,17 @@
     "build": "next build",
     "start": "next start"
   },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
   "dependencies": {
+    "@chakra-ui/react": "^1.1.5",
+    "@emotion/react": "^11.1.4",
+    "@emotion/styled": "^11.0.0",
+    "framer-motion": "^3.2.2-rc.1",
     "next": "10.0.5",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-dropzone": "^11.2.4"
   }
 }
