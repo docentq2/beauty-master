@@ -11,44 +11,55 @@ import {
   FormLabel,
   FormHelperText,
   Switch,
+  CloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 
 export default function SignIn() {
-  const [isMaster, setIsMaster] = useState(false);
   const [files, setFiles] = useState([]);
 
-  console.log("files", files);
-  const allFiles = files.map((file) => {
+  const allFiles = files.map((file, index) => {
     const blobImg = new Blob([file]);
     const url = URL.createObjectURL(blobImg);
     return (
-      <Box key={file.name} mb={5}>
-        <img src={url} alt="" width={180} />
+      <Box key={file.name} m="0 10px" position="relative">
+        <Box
+          position="absolute"
+          top="5px"
+          right="5px"
+          bg="white"
+          border="1px solid #999"
+          borderRadius={2}
+        >
+          <CloseButton
+            onClick={() => {
+              const cloneFiles = [...files];
+              cloneFiles.splice(index, 1);
+              setFiles(cloneFiles);
+            }}
+          />
+        </Box>
+        <Box
+          width={180}
+          height={180}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <img src={url} alt="" />
+        </Box>
       </Box>
     );
   });
 
   return (
-    <Box maxW={600} m="300px auto 200px">
-      <Heading mb={10}>Регистрация</Heading>
-
-      <FormControl display="flex" alignItems="center" m="20px 0">
-        <Switch
-          id="for-masters"
-          defaultChecked={isMaster}
-          onChange={() => setIsMaster(!isMaster)}
-        />
-        <FormLabel htmlFor="for-masters" mb="0" ml={1}>
-          Я мастер
-        </FormLabel>
-      </FormControl>
+    <Box maxW={600} m="100px auto 200px">
+      <Heading mb={10}>Регистрация мастера</Heading>
 
       <FormControl>
         <FormLabel>Email:</FormLabel>
         <Input type="email" placeholder="maria1977@gmail.com" />
-        <FormHelperText>We'll never share your email.</FormHelperText>
       </FormControl>
 
       <FormControl>
@@ -61,74 +72,66 @@ export default function SignIn() {
         <Input type="password" placeholder="Придумайте пароль" />
       </FormControl>
 
-      {isMaster && (
-        <>
-          <FormControl>
-            <FormLabel>Город:</FormLabel>
-            <Input type="city" placeholder="Берлин" />
-          </FormControl>
+      <FormControl>
+        <FormLabel>Город:</FormLabel>
+        <Input type="city" placeholder="Берлин" />
+      </FormControl>
 
-          <FormControl>
-            <FormLabel>Специализация:</FormLabel>
-            <Select placeholder="Специализация">
-              <option>Ногти</option>
-              <option>Волосы</option>
-              <option>Кожа</option>
-              <option>Глаза</option>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Телефон:</FormLabel>
-            <Input type="tel" placeholder="" />
-          </FormControl>
+      <FormControl>
+        <FormLabel>Специализация:</FormLabel>
+        <Select placeholder="Специализация">
+          <option>Ногти</option>
+          <option>Волосы</option>
+          <option>Кожа</option>
+          <option>Глаза</option>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Телефон:</FormLabel>
+        <Input type="tel" placeholder="" />
+      </FormControl>
 
-          <FormControl>
-            <FormLabel>Телефон:</FormLabel>
-            <Input type="tel" placeholder="" />
-          </FormControl>
+      <FormControl>
+        <FormLabel>Телефон:</FormLabel>
+        <Input type="tel" placeholder="" />
+      </FormControl>
 
-          <Dropzone
-            onDrop={(newFiles) => {
-              setFiles([...files, ...newFiles]);
-            }}
-          >
-            {({ getRootProps, getInputProps }) => (
-              <Box>
-                <FormLabel>Загрузите ваши примеры работ:</FormLabel>
+      <Dropzone
+        onDrop={(newFiles) => {
+          setFiles([...files, ...newFiles]);
+        }}
+      >
+        {({ getRootProps, getInputProps }) => (
+          <Box>
+            <FormLabel>Загрузите ваши примеры работ:</FormLabel>
 
-                <Box
-                  {...getRootProps()}
-                  border="2px dashed #eeeeee"
-                  borderRadius="2px"
-                  bg="#fafafa"
-                  color="#bdbdbd"
-                  outline="none"
-                  transition="border 0.24s ease-in-out"
-                  textAlign="center"
-                  padding="20px"
-                  my="20px"
-                  _focus={{
-                    borderColor: "#2196f3",
-                  }}
-                  _hover={{
-                    borderColor: "#2196f3",
-                  }}
-                >
-                  <input {...getInputProps()} />
-                  <Text>
-                    Перенесите или нажмите сюда что бы прикрепить фото
-                  </Text>
-                </Box>
-                <aside>
-                  <Flex flexWrap="wrap" justifyContent="space-between">
-                    {allFiles}
-                  </Flex>
-                </aside>
-              </Box>
-            )}
-          </Dropzone>
-        </>
-      )}
+            <Box
+              {...getRootProps()}
+              border="2px dashed #eeeeee"
+              borderRadius="2px"
+              bg="#fafafa"
+              color="#bdbdbd"
+              outline="none"
+              transition="border 0.24s ease-in-out"
+              textAlign="center"
+              padding="20px"
+              my="20px"
+              _focus={{
+                borderColor: "#2196f3",
+              }}
+              _hover={{
+                borderColor: "#2196f3",
+              }}
+            >
+              <input {...getInputProps()} />
+              <Text>Перенесите или нажмите сюда что бы прикрепить фото</Text>
+            </Box>
+            <aside>
+              <Flex flexWrap="wrap">{allFiles}</Flex>
+            </aside>
+          </Box>
+        )}
+      </Dropzone>
 
       <Box mt={10} textAlign="center">
         <Button
