@@ -42,27 +42,160 @@ export default function Specialisation() {
   }, [city, specialisation]);
 
   return (
-    <Box width={800} mx="auto">
-      <Heading as="h3" size="2xl" mb={30}>
-        Город: {city}
-      </Heading>
-      <Heading as="h3" size="2xl" mb={30}>
-        Специализация: {specialisation}
-      </Heading>
-
-      {loading
-        ? "загружаю"
-        : Reflect.ownKeys(masters).map((master) => {
-            const masterInstance = masters[master];
-
-            return (
-              <Box border="1px solid black" key={master}>
-                Город - {masterInstance.city} <br />
-                Имя - {masterInstance.name} <br />
-                Email - {masterInstance.email} <br />
+    <Box bg="#FFEBEC" minHeight="100vh" height="100%">
+      <Box maxW="1290px" mx="auto" pt="150px">
+        <Flex flexWrap="wrap" justify="space-between">
+          <Box
+            flexBasis="630px"
+            mb="30px"
+            background="#FFFFFF"
+            borderRadius="20px"
+          >
+            <Flex>
+              <Box margin="53px 0 0 53px">
+                <Box
+                  borderRadius="50%"
+                  width={220}
+                  height={220}
+                  overflow="hidden"
+                >
+                  <img src="https://fakeimg.pl/300/" />
+                </Box>
               </Box>
-            );
-          })}
+
+              <Box margin="53px 44px 39px 27px">
+                <Heading as="h2" fontSize="30px">
+                  Парикмахер Ева Мюллер
+                </Heading>
+
+                <Text fontWeight="bold" fontSize="18px" my="19px">
+                  Берлин, Митте. Германия
+                </Text>
+
+                <Text fontSize="14px" margin="23px 0 0 28px">
+                  <b>Языки:</b> русский, немецкий, японский, французский,
+                  китайский, африкаанс.
+                </Text>
+
+                <Text fontSize="14px" margin="20px 0 0 28px">
+                  <b>Услуги:</b> Стрижка, окрашивание, прически, колорирование,
+                  укладка, косички, маски.
+                </Text>
+
+                <Text
+                  textAlign="right"
+                  fontSize="20px"
+                  mt="28px"
+                  color="#FF5975"
+                  fontWeight="bold"
+                >
+                  от 38€
+                </Text>
+              </Box>
+            </Flex>
+          </Box>
+
+          <Box
+            flexBasis="630px"
+            mb="30px"
+            background="#FFFFFF"
+            borderRadius="20px"
+          >
+            <Flex>
+              <Box margin="53px 0 0 53px">
+                <Box
+                  borderRadius="50%"
+                  width={220}
+                  height={220}
+                  overflow="hidden"
+                >
+                  <img src="https://fakeimg.pl/300/" />
+                </Box>
+              </Box>
+
+              <Box margin="53px 44px 39px 27px">
+                <Heading as="h2" fontSize="30px">
+                  Парикмахер Ева Мюллер
+                </Heading>
+
+                <Text fontWeight="bold" fontSize="18px" my="19px">
+                  Берлин, Митте. Германия
+                </Text>
+
+                <Text fontSize="14px" margin="23px 0 0 28px">
+                  <b>Языки:</b> русский, немецкий, японский, французский,
+                  китайский, африкаанс.
+                </Text>
+
+                <Text fontSize="14px" margin="20px 0 0 28px">
+                  <b>Услуги:</b> Стрижка, окрашивание, прически, колорирование,
+                  укладка, косички, маски.
+                </Text>
+
+                <Text
+                  textAlign="right"
+                  fontSize="20px"
+                  mt="28px"
+                  color="#FF5975"
+                  fontWeight="bold"
+                >
+                  от 38€
+                </Text>
+              </Box>
+            </Flex>
+          </Box>
+
+          <Box
+            flexBasis="630px"
+            mb="30px"
+            background="#FFFFFF"
+            borderRadius="20px"
+          >
+            <Flex>
+              <Box margin="53px 0 0 53px">
+                <Box
+                  borderRadius="50%"
+                  width={220}
+                  height={220}
+                  overflow="hidden"
+                >
+                  <img src="https://fakeimg.pl/300/" />
+                </Box>
+              </Box>
+
+              <Box margin="53px 44px 39px 27px">
+                <Heading as="h2" fontSize="30px">
+                  Парикмахер Ева Мюллер
+                </Heading>
+
+                <Text fontWeight="bold" fontSize="18px" my="19px">
+                  Берлин, Митте. Германия
+                </Text>
+
+                <Text fontSize="14px" margin="23px 0 0 28px">
+                  <b>Языки:</b> русский, немецкий, японский, французский,
+                  китайский, африкаанс.
+                </Text>
+
+                <Text fontSize="14px" margin="20px 0 0 28px">
+                  <b>Услуги:</b> Стрижка, окрашивание, прически, колорирование,
+                  укладка, косички, маски.
+                </Text>
+
+                <Text
+                  textAlign="right"
+                  fontSize="20px"
+                  mt="28px"
+                  color="#FF5975"
+                  fontWeight="bold"
+                >
+                  от 38€
+                </Text>
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
+      </Box>
     </Box>
   );
 }
