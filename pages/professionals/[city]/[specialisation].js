@@ -18,7 +18,7 @@ import {
 import firebase from "firebase";
 import { useState, useEffect } from "react";
 
-import initFirebase from "../../../services/firebase";
+import initFirebase from "../../../services/firebase-client";
 
 initFirebase();
 

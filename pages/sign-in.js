@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { Formik, Field, Form } from "formik";
-import initFirebase from "../services/firebase";
+import initFirebase from "../services/firebase-client";
 import firebase from "firebase";
 import { v4 as uuid } from "uuid";
 
