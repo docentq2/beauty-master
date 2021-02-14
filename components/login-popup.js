@@ -147,8 +147,7 @@ export default function LoginPopup() {
                         .auth()
                         .createUserWithEmailAndPassword(email, password)
                         .catch((error) => {
-                          console.log(error);
-                          const message = err.message;
+                          const message = error.message;
                           toast({
                             title: "Ошибка",
                             description: message,
@@ -169,6 +168,14 @@ export default function LoginPopup() {
                         isClosable: true,
                       });
                     }
+
+                    toast({
+                      title: "Ошибка",
+                      description: err.message,
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
                   });
               }}
             >

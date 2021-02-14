@@ -10,7 +10,6 @@ export default function HeaderApp() {
   initFirebase();
   const { user } = useAuth();
 
-  console.log("user", user);
   return (
     <Box bg="#FFEBEC">
       <Flex
@@ -49,13 +48,13 @@ export default function HeaderApp() {
         ) : (
           <Flex align="center">
             <Avatar src={user.photoURL} />
-            <Box ml={5}>
+            <Box ml={5} textAlign="right">
               <Text>{user.email}</Text>
               <Text
+                display="inline-block"
                 color="#2b6cb0"
                 fontSize="14px"
                 mt={2}
-                textAlign="right"
                 cursor="pointer"
                 _hover={{
                   color: "#f00",
