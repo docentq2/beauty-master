@@ -108,18 +108,23 @@ const SwitchField = ({ name, title }) => {
   );
 };
 
-export default function Account() {
+export default function Account({ session }) {
   const { user } = useAuth();
+
   if (user === null) {
-    if (process.browser) {
-      Router.replace("/");
-    }
-    return <></>;
+    return (
+      <Spinner
+        thickness="3px"
+        speed="0.65s"
+        emptyColor="#FFEBEC"
+        color="#ff5975"
+        size="xl"
+      />
+    );
   }
 
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState([]);
-  const [progress, setProgress] = useState(0);
 
   const [dataForm, setDataForm] = useState({
     uuid: user.uid,
@@ -429,8 +434,9 @@ export async function getServerSideProps(context) {
   try {
     const cookies = nookies.get(context);
     await verifyIdToken(cookies.token);
-    return { props: {} };
+    return { props: { session: true } };
   } catch (err) {
+    console.error(err);
     context.res.writeHead(302, { location: "/" });
     context.res.end();
     return { props: {} };
