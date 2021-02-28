@@ -40,16 +40,26 @@ export default function HeaderApp() {
               <LoginPopup />
             </Box>
             <Box margin="0 20px" color="black">
-              <Link href="#">
+              <Link href="/">
                 <a>Стать мастером</a>
               </Link>
             </Box>
           </Flex>
         ) : (
           <Flex align="center">
-            <Avatar src={user.photoURL} />
+            <Link href="/account">
+              <a>
+                <Avatar src={user.photoURL} />
+              </a>
+            </Link>
+
             <Box ml={5} textAlign="right">
-              <Text>{user.email}</Text>
+              <Link href="/account">
+                <a>
+                  <Text>{user.email}</Text>
+                </a>
+              </Link>
+
               <Text
                 display="inline-block"
                 color="#2b6cb0"
