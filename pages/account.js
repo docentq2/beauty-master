@@ -144,7 +144,10 @@ export default function Account({ session }) {
     var userDataRef = firebase.database().ref("users/" + user.uid);
     userDataRef.on("value", (snapshot) => {
       const data = snapshot.val();
-      setDataForm(data);
+      setDataForm({
+        ...dataForm,
+        ...data,
+      });
       setLoading(false);
     });
   }, [user.uid]);
@@ -235,6 +238,7 @@ export default function Account({ session }) {
         />
       ) : (
         <>
+          {console.log(dataForm)}
           <Formik
             initialValues={dataForm}
             onSubmit={async (values, actions) => {
