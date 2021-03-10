@@ -77,7 +77,7 @@ export default function Main() {
                 "linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)",
             }}
             onClick={() => {
-              Router.push("/search/");
+              Router.push("/professionals/");
             }}
           >
             Поиск
