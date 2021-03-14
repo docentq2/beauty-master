@@ -8,9 +8,14 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+import { useState } from "react";
 import Router from "next/router";
+import { cities, cityMap, professions, professionMap } from "./entities";
 
 export default function Main() {
+  const [city, setCity] = useState(null);
+  const [profession, setProfession] = useState(null);
+
   return (
     <Box
       height="900px"
@@ -40,10 +45,13 @@ export default function Main() {
               borderColor="white"
               w="300px"
               borderRadius="33px"
+              onChange={({ target: { value } }) => {
+                setCity(value);
+              }}
             >
-              <option value="option1">Берлин</option>
-              <option value="option2">Берлин 2</option>
-              <option value="option3">Берлин 3</option>
+              {cities.map((city) => (
+                <option value={city}>{cityMap[city].ru}</option>
+              ))}
             </Select>
             <Spacer />
             <Select
@@ -53,10 +61,16 @@ export default function Main() {
               borderColor="white"
               w="300px"
               borderRadius="33px"
+              textTransform="capitalize"
+              onChange={({ target: { value } }) => {
+                setProfession(value);
+              }}
             >
-              <option value="option1">Мастер по маникюру</option>
-              <option value="option2">Мастер по волосам</option>
-              <option value="option3">Мастер по коже</option>
+              {professions.map((profession) => (
+                <option value={profession}>
+                  {professionMap[profession].ru}
+                </option>
+              ))}
             </Select>
           </Flex>
           <Button
@@ -76,8 +90,9 @@ export default function Main() {
               bg:
                 "linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)",
             }}
+            isDisabled={city === null || profession === null}
             onClick={() => {
-              Router.push("/search/");
+              Router.push(`/professionals/${city}/${profession}`);
             }}
           >
             Поиск
