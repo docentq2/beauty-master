@@ -14,42 +14,57 @@ import {
   CloseButton,
   useToast,
 } from "@chakra-ui/react";
-
-// avatar
-// name
-// location
-// language
-// services
-// prices
+import Link from "next/link";
 
 export default function SearchItem(props) {
+  const {
+    uuid,
+    avatar = "https://fakeimg.pl/300/",
+    name = "Имя",
+    location = "Город",
+    language = "русский, немецкий",
+    services = "услуги",
+    prices = [],
+  } = props;
+
   return (
-    <Box flexBasis="630px" mb="30px" background="#FFFFFF" borderRadius="20px">
+    <Box
+      flexBasis="630px"
+      mb="30px"
+      p="53px"
+      background="#FFFFFF"
+      borderRadius="8px"
+      boxShadow="1px 1px 15px rgba(0, 0, 0, 0.17)"
+    >
       <Flex>
-        <Box margin="53px 0 0 53px">
+        <Box>
           <Box borderRadius="50%" width={220} height={220} overflow="hidden">
-            <img src={props.avatar} />
+            <img src={avatar} />
           </Box>
         </Box>
 
-        <Box margin="53px 44px 39px 27px">
-          <Heading as="h2" fontSize="30px">
-            {props.name}
-          </Heading>
+        <Box margin="0 44px 39px 27px">
+          <Link href={`/professional/${uuid}`}>
+            <a>
+              <Heading as="h2" fontSize="30px">
+                {name}
+              </Heading>
+            </a>
+          </Link>
 
           <Text fontWeight="bold" fontSize="18px" my="19px">
-            {props.location}
+            {location}
           </Text>
 
           <Text fontSize="14px" margin="23px 0 0 28px">
-            <b>Языки:</b> {props.language}
+            <b>Языки:</b> {language}
           </Text>
 
           <Text fontSize="14px" margin="20px 0 0 28px">
-            <b>Услуги:</b> {props.services}
+            <b>Услуги:</b> {services}
           </Text>
 
-          {props.prices.map((price) => {
+          {prices.map((price) => {
             return (
               <Text
                 textAlign="right"
