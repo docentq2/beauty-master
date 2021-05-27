@@ -27,6 +27,8 @@ import "firebase/storage";
 import nookies from "nookies";
 import initFirebase from "../../../services/firebase-client";
 import SearchItem from "../../../components/search-item";
+import SearchPanel from "../../../components/search-panel";
+import MasterNotFound from "../../../components/master-not-found";
 
 initFirebase();
 
@@ -54,11 +56,15 @@ export default function SearchBySpecialisation() {
 
     userDataRef.on("value", (snapshot) => {
       const data = snapshot.val();
-      setMasters(
-        Object.values(data).filter(
-          (master) => master.specialisation === specialisation
-        )
-      );
+      //todo надо что бы если в городе не было мастеров страница перерисовывалась
+      if (data) {
+        setMasters(
+          Object.values(data).filter(
+            (master) => master.specialisation === specialisation
+          )
+        );
+      }
+
       setLoading(false);
     });
   }, [city]);
@@ -71,25 +77,25 @@ export default function SearchBySpecialisation() {
     );
   }
 
-  if (masters.length === 0) {
-    return (
-      <Box textAlign="center" mt="20px" fontSize="30px" color="#333">
-        Мастеров нет
-      </Box>
-    );
-  }
-
   return (
-    <Flex
-      maxW="1290px"
-      mx="auto"
-      pt="150px"
-      flexWrap="wrap"
-      justify="space-between"
-    >
-      {masters.map((master) => (
-        <SearchItem {...master} />
-      ))}
-    </Flex>
+    <Box>
+      <SearchPanel />
+
+      {masters.length === 0 ? (
+        <MasterNotFound />
+      ) : (
+        <Flex
+          maxW="1290px"
+          mx="auto"
+          pt="150px"
+          flexWrap="wrap"
+          justify="space-between"
+        >
+          {masters.map((master, index) => (
+            <SearchItem key={index} {...master} />
+          ))}
+        </Flex>
+      )}
+    </Box>
   );
 }

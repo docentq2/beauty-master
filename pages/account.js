@@ -15,6 +15,7 @@ import {
   CloseButton,
   Textarea,
   useToast,
+  Image,
 } from "@chakra-ui/react";
 import Router from "next/router";
 import { v4 as uuid } from "uuid";
@@ -28,6 +29,8 @@ import "firebase/storage";
 import { useAuth } from "../components/auth";
 import nookies from "nookies";
 import { verifyIdToken } from "../services/firebase-admin";
+import { AccountDefaultLogo } from "../assets/unicorn/account-default-logo";
+import {cities, cityMap, professions} from "../components/entities";
 
 initFirebase();
 
@@ -94,13 +97,17 @@ const SwitchField = ({ name, title }) => {
   return (
     <Field name={name} type="checkbox">
       {({ field }) => {
-        console.log("field", field, name);
         return (
           <FormControl mt={5} display="flex" alignItems="center">
             <FormLabel htmlFor={name} mb={0}>
               {title}
             </FormLabel>
-            <Switch {...field} id={name} isChecked={field.value} />
+            <Switch
+              {...field}
+              id={name}
+              colorScheme="green"
+              isChecked={field.value}
+            />
           </FormControl>
         );
       }}
@@ -224,213 +231,239 @@ export default function Account({ session }) {
     });
   }
 
+  if (loading) {
+    return (
+      <Spinner
+        thickness="3px"
+        speed="0.65s"
+        emptyColor="#FFEBEC"
+        color="#ff5975"
+        size="xl"
+      />
+    );
+  }
+
   return (
-    <Box maxW={600} m="100px auto 200px">
-      <Heading mb={10}>Личный кабинет</Heading>
+    <Flex mx="155px" my="50px" justify="center">
+      <Box>
+        <Flex
+          border="1px solid #E5E5E5"
+          borderRadius="50%"
+          w="220px"
+          h="220px"
+          overflow="hidden"
+          justify="center"
+          align="center"
+        >
+          <AccountDefaultLogo />
+        </Flex>
+      </Box>
 
-      {loading ? (
-        <Spinner
-          thickness="3px"
-          speed="0.65s"
-          emptyColor="#FFEBEC"
-          color="#ff5975"
-          size="xl"
-        />
-      ) : (
-        <>
-          {console.log(dataForm)}
-          <Formik
-            initialValues={dataForm}
-            onSubmit={async (values, actions) => {
-              const filePromises = files.map((file) =>
-                uploadImageAsPromise(file)
-              );
+      <Box>
+        <Formik
+          initialValues={dataForm}
+          onSubmit={async (values, actions) => {
+            const filePromises = files.map((file) =>
+              uploadImageAsPromise(file)
+            );
 
-              const imageExamples = await Promise.all(filePromises);
+            const imageExamples = await Promise.all(filePromises);
 
-              const allImageExamples = values.imageExamples.concat(
-                imageExamples
-              );
+            const allImageExamples = values.imageExamples.concat(imageExamples);
 
-              database
-                .ref("users/" + dataForm.uuid)
-                .set(
-                  { ...values, imageExamples: allImageExamples },
-                  (error) => {
-                    if (error) {
-                      toast({
-                        position: "bottom-left",
-                        title: "Ошибка при обновлении",
-                        description: "Что-то пошло не так, попробуйте позже",
-                        status: "error",
-                        duration: 20000,
-                        isClosable: true,
-                      });
-                      console.error("Failed with error: " + error);
-                    } else {
-                      toast({
-                        position: "bottom-left",
-                        title: "Профиль успешно обновлен",
-                        status: "success",
-                        duration: 9000,
-                        isClosable: true,
-                      });
-                    }
-                    actions.setSubmitting(false);
-                  }
-                );
-            }}
-          >
-            {(props) => (
-              <Form>
-                <SwitchField name="isMaster" title="Я мастер" />
-                {props.values.isMaster && (
-                  <>
-                    <TextField
-                      name="name"
-                      title="Имя:"
-                      placeholder="Мария Иванова"
-                    />
-                    <TextField
-                      name="city"
-                      title="Местоположение:"
-                      placeholder="Берлин, Митте. Германия"
-                    />
-                    <SelectField
-                      name="specialisation"
-                      title="Специализация:"
-                      placeholder="Специализация"
-                      options={[
-                        { title: "Ногти", value: "fingers" },
-                        { title: "Волосы", value: "hair" },
-                        { title: "Кожа", value: "skin" },
-                        { title: "Глаза", value: "eyes" },
-                      ]}
-                    />
-                    <TextField
-                      name="phone"
-                      title="Телефон"
-                      placeholder="+79999999999"
-                      type="tel"
-                    />
-                    <TextField
-                      name="language"
-                      title="Я владею языками:"
-                      placeholder="русский, немецкий"
-                    />
-                    <TextareaField
-                      name="about"
-                      title="О себе"
-                      placeholder={
-                        "Привет! Я работаю парикмахером 5 лет. " +
-                        'Принимаю у себя в студии "Schöne Haare" по адресу Хауптштрассе 7. ' +
-                        "Записывайся!"
-                      }
-                    />
-                    <TextField
-                      name="site"
-                      title="Личный сайт, соц сеть:"
-                      placeholder=""
-                    />
+            database
+              .ref("users/" + dataForm.uuid)
+              .set({ ...values, imageExamples: allImageExamples }, (error) => {
+                if (error) {
+                  toast({
+                    position: "bottom-left",
+                    title: "Ошибка при обновлении",
+                    description: "Что-то пошло не так, попробуйте позже",
+                    status: "error",
+                    duration: 20000,
+                    isClosable: true,
+                  });
+                  console.error("Failed with error: " + error);
+                } else {
+                  toast({
+                    position: "bottom-left",
+                    title: "Профиль успешно обновлен",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                }
+                actions.setSubmitting(false);
+              });
+          }}
+        >
+          {(props) => (
+            <Form>
+              <Flex>
+                <Box mx="80px" maxW="690px" flexGrow={1}>
+                  <Heading mb={10}>Личный кабинет</Heading>
+                  {props.values.isMaster && (
+                    <>
+                      <Text fontSize="20px" fontWeight="bold">
+                        Форма для мастеров:
+                      </Text>
+                      <TextField
+                        name="name"
+                        title="Имя:"
+                        placeholder="Мария Иванова"
+                      />
+                      <SelectField
+                        name="city"
+                        title="Город:"
+                        placeholder="Город"
+                        options={cities.map((city) => ({
+                          title: cityMap[city].ru,
+                          value: city,
+                        }))}
+                      />
 
-                    <FieldArray
-                      name="imageExamples"
-                      render={(arrayHelpers) => (
-                        <>
-                          {props.values.imageExamples &&
-                            props.values.imageExamples.length > 0 && (
-                              <>
-                                <FormLabel>
-                                  Загруженные примеры работ:
-                                </FormLabel>
-                                <Flex flexWrap="wrap">
-                                  {props.values.imageExamples.map(
-                                    (image, index) => (
-                                      <ImageContainer
-                                        key={image}
-                                        url={image}
-                                        deleteImage={() => {
-                                          arrayHelpers.remove(index);
-                                        }}
-                                      />
-                                    )
-                                  )}
-                                </Flex>
-                              </>
-                            )}
-                        </>
-                      )}
-                    />
+                      <TextField
+                        name="address"
+                        title="Рабочий адрес:"
+                        placeholder="Берлин, Митте. Германия"
+                      />
 
-                    <Dropzone
-                      onDrop={(newFiles) => {
-                        setFiles([...files, ...newFiles]);
-                      }}
-                    >
-                      {({ getRootProps, getInputProps }) => (
-                        <Box>
-                          <FormLabel>Загрузите ваши примеры работ:</FormLabel>
+                      <SelectField
+                        name="specialisation"
+                        title="Специализация:"
+                        placeholder="Специализация"
+                        options={professions.map(profession => )}
+                      />
+                      <TextField
+                        name="phone"
+                        title="Телефон"
+                        placeholder="+79999999999"
+                        type="tel"
+                      />
+                      <TextField
+                        name="language"
+                        title="Я владею языками:"
+                        placeholder="русский, немецкий"
+                      />
+                      <TextareaField
+                        name="about"
+                        title="О себе"
+                        placeholder={
+                          "Привет! Я работаю парикмахером 5 лет. " +
+                          'Принимаю у себя в студии "Schöne Haare" по адресу Хауптштрассе 7. ' +
+                          "Записывайся!"
+                        }
+                      />
+                      <TextField
+                        name="site"
+                        title="Личный сайт, соц сеть:"
+                        placeholder=""
+                      />
 
-                          <Box
-                            {...getRootProps()}
-                            border="2px dashed #eeeeee"
-                            borderRadius="2px"
-                            bg="#fafafa"
-                            color="#bdbdbd"
-                            outline="none"
-                            transition="border 0.24s ease-in-out"
-                            textAlign="center"
-                            padding="20px"
-                            my="20px"
-                            _focus={{
-                              borderColor: "#2196f3",
-                            }}
-                            _hover={{
-                              borderColor: "#2196f3",
-                            }}
-                          >
-                            <input {...getInputProps()} />
-                            <Text>
-                              Перенесите или нажмите сюда что бы прикрепить фото
-                            </Text>
+                      <FieldArray
+                        name="imageExamples"
+                        render={(arrayHelpers) => (
+                          <>
+                            {props.values.imageExamples &&
+                              props.values.imageExamples.length > 0 && (
+                                <>
+                                  <FormLabel>
+                                    Загруженные примеры работ:
+                                  </FormLabel>
+                                  <Flex flexWrap="wrap">
+                                    {props.values.imageExamples.map(
+                                      (image, index) => (
+                                        <ImageContainer
+                                          key={image}
+                                          url={image}
+                                          deleteImage={() => {
+                                            arrayHelpers.remove(index);
+                                          }}
+                                        />
+                                      )
+                                    )}
+                                  </Flex>
+                                </>
+                              )}
+                          </>
+                        )}
+                      />
+
+                      <Dropzone
+                        onDrop={(newFiles) => {
+                          setFiles([...files, ...newFiles]);
+                        }}
+                      >
+                        {({ getRootProps, getInputProps }) => (
+                          <Box>
+                            <FormLabel>Загрузите ваши примеры работ:</FormLabel>
+
+                            <Box
+                              {...getRootProps()}
+                              border="2px dashed #eeeeee"
+                              borderRadius="2px"
+                              bg="#fafafa"
+                              color="#bdbdbd"
+                              outline="none"
+                              transition="border 0.24s ease-in-out"
+                              textAlign="center"
+                              padding="20px"
+                              my="20px"
+                              _focus={{
+                                borderColor: "#2196f3",
+                              }}
+                              _hover={{
+                                borderColor: "#2196f3",
+                              }}
+                            >
+                              <input {...getInputProps()} />
+                              <Text>
+                                Перенесите или нажмите сюда что бы прикрепить
+                                фото
+                              </Text>
+                            </Box>
+                            <aside>
+                              <Flex flexWrap="wrap">{allFiles}</Flex>
+                            </aside>
                           </Box>
-                          <aside>
-                            <Flex flexWrap="wrap">{allFiles}</Flex>
-                          </aside>
-                        </Box>
-                      )}
-                    </Dropzone>
-                  </>
-                )}
-                <Box mt={10} textAlign="center">
-                  <Button
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                    bg="linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)"
-                    color="white"
-                    p="12px 100px"
-                    borderRadius="33px"
-                    fontSize="24px"
-                    lineHeight="30px"
-                    height="auto"
-                    _hover={{
-                      bg:
-                        "linear-gradient(180deg, #da414a 0%, rgba(255, 82, 123, 0.95) 100%)",
-                    }}
-                    _active={{
-                      bg:
-                        "linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)",
-                    }}
-                  >
-                    Обновить профиль
-                  </Button>
+                        )}
+                      </Dropzone>
+                    </>
+                  )}
                 </Box>
-              </Form>
-            )}
-          </Formik>
-        </>
-      )}
-    </Box>
+                <Box>
+                  <SwitchField name="isMaster" title="Я мастер" />
+                </Box>
+              </Flex>
+
+              <Box mt={10} textAlign="center" alignSelf="right">
+                <Button
+                  isLoading={props.isSubmitting}
+                  type="submit"
+                  bg="linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)"
+                  color="white"
+                  p="12px 24px"
+                  borderRadius="33px"
+                  fontSize="20px"
+                  lineHeight="26px"
+                  height="auto"
+                  _hover={{
+                    bg:
+                      "linear-gradient(180deg, #da414a 0%, rgba(255, 82, 123, 0.95) 100%)",
+                  }}
+                  _active={{
+                    bg:
+                      "linear-gradient(180deg, #FF4F59 0%, rgba(255, 82, 123, 0.85) 100%)",
+                  }}
+                >
+                  Обновить профиль
+                </Button>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 }
 

@@ -15,13 +15,13 @@ export const cityMap = {
   },
 };
 
-export const professions = ["hairdresser", "Stylist", "visagiste"];
+export const professions = ["hairdresser", "stylist", "visagiste"];
 
 export const professionMap = {
   hairdresser: {
     ru: "парикмахер",
   },
-  Stylist: {
+  stylist: {
     ru: "стилист",
   },
   visagiste: {

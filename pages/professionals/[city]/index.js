@@ -27,6 +27,7 @@ import "firebase/storage";
 import nookies from "nookies";
 import initFirebase from "../../../services/firebase-client";
 import SearchItem from "../../../components/search-item";
+import SearchPanel from "../../../components/search-panel";
 
 initFirebase();
 
@@ -62,16 +63,19 @@ export default function SearchByCity() {
   }
 
   return (
-    <Flex
-      maxW="1290px"
-      mx="auto"
-      pt="150px"
-      flexWrap="wrap"
-      justify="space-between"
-    >
-      {Object.values(masters).map((master) => (
-        <SearchItem {...master} />
-      ))}
-    </Flex>
+    <Box>
+      <SearchPanel />
+      <Flex
+        maxW="1290px"
+        mx="auto"
+        pt="150px"
+        flexWrap="wrap"
+        justify="space-between"
+      >
+        {Object.values(masters).map((master, index) => (
+          <SearchItem key={index} {...master} />
+        ))}
+      </Flex>
+    </Box>
   );
 }

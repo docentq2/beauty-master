@@ -64,9 +64,10 @@ export default function SearchItem(props) {
             <b>Услуги:</b> {services}
           </Text>
 
-          {prices.map((price) => {
+          {prices.map((price, index) => {
             return (
               <Text
+                key={index}
                 textAlign="right"
                 fontSize="20px"
                 mt="28px"
